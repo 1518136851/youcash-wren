@@ -1,0 +1,77 @@
+name: Build dev image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-dev-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 21
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Build
+        run: |
+          ./mvnw clean install -B -DskipTests -P exec-jar
+      - name: Login to ghcr
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Docker image
+        run: |
+          WREN_VERSION=$(./mvnw --quiet help:evaluate -Dexpression=project.version -DforceStdout)
+          LATEST_COMMIT=$(git log -1 --pretty=%h)
+          cd ./docker
+          cp ../wren-server/target/wren-server-${WREN_VERSION}-executable.jar ./
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            --tag ghcr.io/canner/wren-engine:main-${LATEST_COMMIT} \
+            --tag ghcr.io/canner/wren-engine:nightly \
+            --push -f ./Dockerfile \
+            --build-arg "WREN_VERSION=${WREN_VERSION}" .
+  build-ibis-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/canner/wren-engine-ibis
+          tags: |
+            type=sha
+            type=raw,value=nightly
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./ibis-server
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}

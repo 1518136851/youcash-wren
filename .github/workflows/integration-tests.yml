@@ -1,0 +1,42 @@
+# Run secret-dependent integration tests
+name: Integration tests
+
+on:
+  pull_request:
+    types: [ labeled ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number }}
+  cancel-in-progress: true
+
+jobs:
+  # Branch-based in origin repo pull request
+  integration-trusted:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.event.label.name == 'v1-engine-changed' }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 21
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: build
+        run: |
+          ./mvnw clean install -B -DskipTests
+      - name: integration tests
+        env:
+          TEST_BIG_QUERY_PROJECT_ID: ${{ secrets.TEST_BIG_QUERY_PROJECT_ID }}
+          TEST_BIG_QUERY_PARENT_PROJECT_ID: ${{ secrets.TEST_BIG_QUERY_PARENT_PROJECT_ID }}
+          TEST_BIG_QUERY_CREDENTIALS_BASE64_JSON: ${{ secrets.TEST_BIG_QUERY_CREDENTIALS_BASE64_JSON }}
+          TEST_BIG_QUERY_BUCKET_NAME: ${{ secrets.TEST_BIG_QUERY_BUCKET_NAME }}
+          TEST_DUCKDB_STORAGE_ACCESS_KEY: ${{ secrets.TEST_DUCKDB_STORAGE_ACCESS_KEY }}
+          TEST_DUCKDB_STORAGE_SECRET_KEY: ${{ secrets.TEST_DUCKDB_STORAGE_SECRET_KEY }}
+        run: |
+          ./mvnw test -B --fail-at-end -pl :wren-tests
