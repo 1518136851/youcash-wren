@@ -14,7 +14,6 @@
 package io.wren.base.sqlrewrite;
 
 import com.google.common.collect.ImmutableSet;
-import io.airlift.log.Logger;
 import io.trino.sql.SqlFormatter;
 import io.trino.sql.parser.SqlBaseLexer;
 import io.trino.sql.tree.DereferenceExpression;
@@ -54,7 +53,6 @@ import static java.util.Objects.requireNonNull;
 
 public class CacheRewrite
 {
-    private static final Logger LOG = Logger.get(CacheRewrite.class);
     private static final Set<String> KEYWORDS = ImmutableSet.copyOf(SqlBaseLexer.ruleNames);
 
     private CacheRewrite() {}
@@ -75,7 +73,7 @@ public class CacheRewrite
             }
         }
         catch (Exception e) {
-            LOG.warn(e, "Failed to rewrite query: %s", sql);
+//            LOG.warn(e, "Failed to rewrite query: %s", sql);
         }
         return Optional.empty();
     }

@@ -3,9 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>io.airlift</groupId>
-        <artifactId>airbase</artifactId>
-        <version>153</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.10</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>io.wren</groupId>
@@ -30,8 +31,6 @@
         <module>trino-parser</module>
         <module>wren-base</module>
         <module>wren-main</module>
-        <module>wren-server</module>
-        <module>wren-tests</module>
     </modules>
 
     <scm>
@@ -69,7 +68,6 @@
         <dep.drift.version>1.21</dep.drift.version>
         <dep.testcontainers.version>1.16.3</dep.testcontainers.version>
         <dep.errorprone.version>2.26.1</dep.errorprone.version>
-        <dep.plugin.failsafe.version>${dep.plugin.surefire.version}</dep.plugin.failsafe.version>
         <netty.version>4.1.45.Final</netty.version>
 
         <!--
@@ -88,13 +86,37 @@
     </properties>
 
     <dependencyManagement>
+
         <dependencies>
+
+<!--            &lt;!&ndash; 添加slf4j-api依赖 &ndash;&gt;-->
+<!--            <dependency>-->
+<!--                <groupId>org.slf4j</groupId>-->
+<!--                <artifactId>slf4j-api</artifactId>-->
+<!--                <version>2.0.17</version> &lt;!&ndash; 可根据需要选择合适的版本 &ndash;&gt;-->
+<!--            </dependency>-->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>32.1.3-jre</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.calcite</groupId>
+                <artifactId>calcite-core</artifactId>
+                <version>1.39.0</version>
+            </dependency>
             <dependency>
                 <groupId>org.jdbi</groupId>
                 <artifactId>jdbi3-bom</artifactId>
                 <version>3.23.0</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.36</version>
             </dependency>
 
             <dependency>
@@ -147,11 +169,7 @@
                 <version>${dep.errorprone.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>failureaccess</artifactId>
-                <version>1.0.2</version>
-            </dependency>
+
 
             <dependency>
                 <groupId>com.google.protobuf</groupId>
@@ -183,95 +201,8 @@
                 </exclusions>
             </dependency>
 
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>bootstrap</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
 
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>concurrent</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
 
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>configuration</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>event</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>http-client</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>http-server</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>jaxrs</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>json</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>log</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>log-manager</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>node</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>stats</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>testing</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>trace-token</artifactId>
-                <version>${dep.airlift.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>io.airlift</groupId>
-                <artifactId>units</artifactId>
-                <version>1.10</version>
-            </dependency>
 
             <dependency>
                 <groupId>io.wren</groupId>
@@ -346,11 +277,7 @@
                 <version>3.42.0</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.duckdb</groupId>
-                <artifactId>duckdb_jdbc</artifactId>
-                <version>1.0.0</version>
-            </dependency>
+
 
             <dependency>
                 <groupId>org.jetbrains</groupId>
@@ -433,11 +360,7 @@
                     <version>1.6.0</version>
                 </plugin>
 
-                <plugin>
-                    <groupId>io.airlift.drift</groupId>
-                    <artifactId>drift-maven-plugin</artifactId>
-                    <version>${dep.drift.version}</version>
-                </plugin>
+
 
                 <plugin>
                     <groupId>org.gaul</groupId>

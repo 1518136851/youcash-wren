@@ -1,6 +1,6 @@
-package com.lsy.seckill.vo;
+package io.wren.main.vo;
 
-import com.lsy.seckill.enums.ResponseCodeEnum;
+import io.wren.main.enums.ResponseCodeEnum;
 import lombok.Data;
 
 @Data

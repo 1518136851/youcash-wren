@@ -12,34 +12,27 @@
  * limitations under the License.
  */
 
-package io.wren.main.web.dto;
+package io.wren.main.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@Data
 public class DryPlanDtoV2
 {
-    private final String manifestStr;
-    private final String sql;
+    @NotNull(message = "mdl不允许为空")
+    private  String manifestStr;
+    @NotNull(message = "标准sql不允许为空")
+    private  String sql;
+    @NotNull(message = "请求id不允许为空")
+    private String requestId;
+    @NotNull(message = "查询id不允许为空")
+    private String queryId;
+    @NotNull(message = "系统id不允许为空")
+    private String systemId;
 
-    @JsonCreator
-    public DryPlanDtoV2(
-            @JsonProperty("manifestStr") String manifestStr,
-            @JsonProperty("sql") String sql)
-    {
-        this.manifestStr = manifestStr;
-        this.sql = sql;
-    }
-
-    @JsonProperty
-    public String getManifestStr()
-    {
-        return manifestStr;
-    }
-
-    @JsonProperty
-    public String getSql()
-    {
-        return sql;
-    }
 }

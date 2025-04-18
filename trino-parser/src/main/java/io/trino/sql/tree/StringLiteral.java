@@ -13,57 +13,42 @@
  */
 package io.trino.sql.tree;
 
-import io.airlift.slice.Slice;
 
 import java.util.Objects;
 import java.util.Optional;
 
-import static io.airlift.slice.Slices.utf8Slice;
 import static java.util.Objects.requireNonNull;
 
 public class StringLiteral
         extends Literal
 {
     private final String value;
-    private final Slice slice;
 
-    public StringLiteral(String value)
-    {
+    public StringLiteral(String value) {
         this(Optional.empty(), value);
     }
 
-    public StringLiteral(NodeLocation location, String value)
-    {
+    public StringLiteral(NodeLocation location, String value) {
         this(Optional.of(location), value);
     }
 
-    private StringLiteral(Optional<NodeLocation> location, String value)
-    {
+    private StringLiteral(Optional<NodeLocation> location, String value) {
         super(location);
         requireNonNull(value, "value is null");
         this.value = value;
-        this.slice = utf8Slice(value);
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
-    public Slice getSlice()
-    {
-        return slice;
-    }
-
     @Override
-    public <R, C> R accept(AstVisitor<R, C> visitor, C context)
-    {
+    public <R, C> R accept(AstVisitor<R, C> visitor, C context) {
         return visitor.visitStringLiteral(this, context);
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -76,14 +61,12 @@ public class StringLiteral
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return value.hashCode();
     }
 
     @Override
-    public boolean shallowEquals(Node other)
-    {
+    public boolean shallowEquals(Node other) {
         if (!sameClass(this, other)) {
             return false;
         }

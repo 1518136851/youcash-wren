@@ -1,14 +1,13 @@
-package com.lsy.seckill.enums;
+package io.wren.main.enums;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 
 @AllArgsConstructor
 @Getter
 @ToString
-public enum ResponseCodeEnum{
+public enum ResponseCodeEnum {
 
     //通用
     SUCCESS(200,"请求成功"),

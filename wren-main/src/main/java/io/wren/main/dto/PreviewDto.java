@@ -26,7 +26,7 @@
  *  limitations under the License.
  */
 
-package io.wren.main.web.dto;
+package io.wren.main.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

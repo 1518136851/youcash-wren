@@ -17,8 +17,9 @@ package io.wren.base.dto;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableMap;
-import io.airlift.units.Duration;
 
+import java.time.Duration;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
@@ -33,9 +34,8 @@ public class CumulativeMetric
             String name,
             String baseObject,
             Measure measure,
-            Window window)
-    {
-        return new CumulativeMetric(name, baseObject, measure, window, false, null, ImmutableMap.of());
+            Window window) {
+        return new CumulativeMetric(name, baseObject, measure, window, false, null, Collections.emptyMap());
     }
 
     private final String name;
@@ -54,68 +54,58 @@ public class CumulativeMetric
             @JsonProperty("window") Window window,
             @JsonProperty("cached") boolean cached,
             @JsonProperty("refreshTime") Duration refreshTime,
-            @JsonProperty("properties") Map<String, String> properties)
-    {
+            @JsonProperty("properties") Map<String, String> properties) {
         this.name = requireNonNullEmpty(name, "name is null or empty");
         this.baseObject = requireNonNullEmpty(baseObject, "baseObject is null or empty");
         this.measure = requireNonNull(measure, "measure is null");
         this.window = requireNonNull(window, "window is null");
         this.cached = cached;
         this.refreshTime = refreshTime;
-        this.properties = properties == null ? ImmutableMap.of() : properties;
+        this.properties = properties == null? Collections.emptyMap() : Collections.unmodifiableMap(properties);
     }
 
     @JsonProperty
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     @JsonProperty
-    public String getBaseObject()
-    {
+    public String getBaseObject() {
         return baseObject;
     }
 
     @JsonProperty
-    public Measure getMeasure()
-    {
+    public Measure getMeasure() {
         return measure;
     }
 
     @JsonProperty
-    public Window getWindow()
-    {
+    public Window getWindow() {
         return window;
     }
 
     @JsonProperty
-    public boolean isCached()
-    {
+    public boolean isCached() {
         return cached;
     }
 
     @JsonProperty
-    public Duration getRefreshTime()
-    {
+    public Duration getRefreshTime() {
         return refreshTime;
     }
 
     @JsonProperty
-    public Map<String, String> getProperties()
-    {
+    public Map<String, String> getProperties() {
         return properties;
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return Objects.hash(name, baseObject, measure, window, cached, refreshTime, properties);
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -135,16 +125,16 @@ public class CumulativeMetric
     }
 
     @Override
-    public String toString()
-    {
-        return toStringHelper(this)
-                .add("name", name)
-                .add("baseObject", baseObject)
-                .add("measure", measure)
-                .add("window", window)
-                .add("cached", cached)
-                .add("refreshTime", refreshTime)
-                .add("properties", properties)
-                .toString();
+    public String toString() {
+        StringBuilder sb = new StringBuilder("CumulativeMetric{");
+        sb.append("name='").append(name).append("'");
+        sb.append(", baseObject='").append(baseObject).append("'");
+        sb.append(", measure=").append(measure);
+        sb.append(", window=").append(window);
+        sb.append(", cached=").append(cached);
+        sb.append(", refreshTime=").append(refreshTime);
+        sb.append(", properties=").append(properties);
+        sb.append('}');
+        return sb.toString();
     }
 }

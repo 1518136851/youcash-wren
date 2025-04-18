@@ -13,13 +13,14 @@
  */
 package io.wren.base.dto;
 
-import io.airlift.units.Duration;
+
+import java.time.Duration;
 
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 public interface CacheInfo
 {
-    Duration defaultRefreshTime = new Duration(30, MINUTES);
+    Duration defaultRefreshTime = Duration.ofMinutes(30);
 
     String getName();
 

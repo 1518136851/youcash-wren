@@ -14,8 +14,6 @@
 package io.trino.sql.tree;
 
 import com.google.common.io.BaseEncoding;
-import io.airlift.slice.Slice;
-import io.airlift.slice.Slices;
 import io.trino.sql.parser.ParsingException;
 
 import java.util.Objects;
@@ -32,15 +30,13 @@ public class BinaryLiteral
     private static final Pattern WHITESPACE_PATTERN = Pattern.compile("[ \\r\\n\\t]");
     private static final Pattern NOT_HEX_DIGIT_PATTERN = Pattern.compile(".*[^A-F0-9].*");
 
-    private final Slice value;
+    private final byte[] value;
 
-    public BinaryLiteral(String value)
-    {
+    public BinaryLiteral(String value) {
         this(Optional.empty(), value);
     }
 
-    public BinaryLiteral(Optional<NodeLocation> location, String value)
-    {
+    public BinaryLiteral(Optional<NodeLocation> location, String value) {
         super(location);
         requireNonNull(value, "value is null");
         String hexString = WHITESPACE_PATTERN.matcher(value).replaceAll("").toUpperCase(ENGLISH);
@@ -50,36 +46,31 @@ public class BinaryLiteral
         if (hexString.length() % 2 != 0) {
             throw new ParsingException("Binary literal must contain an even number of digits", location.get());
         }
-        this.value = Slices.wrappedBuffer(BaseEncoding.base16().decode(hexString));
+        this.value = BaseEncoding.base16().decode(hexString);
     }
 
-    public BinaryLiteral(NodeLocation location, String value)
-    {
+    public BinaryLiteral(NodeLocation location, String value) {
         this(Optional.of(location), value);
     }
 
     /**
      * Return the valued as a hex-formatted string with upper-case characters
      */
-    public String toHexString()
-    {
-        return BaseEncoding.base16().encode(value.getBytes());
+    public String toHexString() {
+        return BaseEncoding.base16().encode(value);
     }
 
-    public Slice getValue()
-    {
+    public byte[] getValue() {
         return value;
     }
 
     @Override
-    public <R, C> R accept(AstVisitor<R, C> visitor, C context)
-    {
+    public <R, C> R accept(AstVisitor<R, C> visitor, C context) {
         return visitor.visitBinaryLiteral(this, context);
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -88,22 +79,20 @@ public class BinaryLiteral
         }
 
         BinaryLiteral that = (BinaryLiteral) o;
-        return Objects.equals(value, that.value);
+        return java.util.Arrays.equals(value, that.value);
     }
 
     @Override
-    public int hashCode()
-    {
-        return value.hashCode();
+    public int hashCode() {
+        return java.util.Arrays.hashCode(value);
     }
 
     @Override
-    public boolean shallowEquals(Node other)
-    {
+    public boolean shallowEquals(Node other) {
         if (!sameClass(this, other)) {
             return false;
         }
 
-        return Objects.equals(value, ((BinaryLiteral) other).value);
+        return java.util.Arrays.equals(value, ((BinaryLiteral) other).value);
     }
 }

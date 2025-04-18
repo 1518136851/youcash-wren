@@ -14,18 +14,17 @@
 
 package io.wren.main;
 
-import com.google.inject.Binder;
-import io.airlift.configuration.AbstractConfigurationAwareModule;
-import io.wren.base.config.WrenConfig;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import static io.airlift.configuration.ConfigBinder.configBinder;
+import java.text.ParseException;
 
-public class WrenModule
-        extends AbstractConfigurationAwareModule
-{
-    @Override
-    protected void setup(Binder binder)
-    {
-        configBinder(binder).bindConfig(WrenConfig.class);
+@SpringBootApplication
+public class WrenApplication {
+
+    public static void main(String[] args) throws ParseException {
+        SpringApplication.run(WrenApplication.class, args);
+
     }
+
 }

@@ -14,57 +14,47 @@
 package io.trino.sql.tree;
 
 import com.google.common.base.CharMatcher;
-import io.airlift.slice.Slice;
 
 import java.util.Objects;
 import java.util.Optional;
 
-import static io.airlift.slice.Slices.utf8Slice;
 import static java.util.Objects.requireNonNull;
 
 public class CharLiteral
         extends Literal
 {
     private final String value;
-    private final Slice slice;
 
-    public CharLiteral(String value)
-    {
+    public CharLiteral(String value) {
         this(Optional.empty(), value);
     }
 
-    public CharLiteral(NodeLocation location, String value)
-    {
+    public CharLiteral(NodeLocation location, String value) {
         this(Optional.of(location), value);
     }
 
-    public CharLiteral(Optional<NodeLocation> location, String value)
-    {
+    public CharLiteral(Optional<NodeLocation> location, String value) {
         super(location);
         requireNonNull(value, "value is null");
-        this.value = value;
-        this.slice = utf8Slice(CharMatcher.is(' ').trimTrailingFrom(value));
+        this.value = CharMatcher.is(' ').trimTrailingFrom(value);
     }
 
-    public String getValue()
-    {
+    public String getValue() {
         return value;
     }
 
-    public Slice getSlice()
-    {
-        return slice;
-    }
+    // 移除 getSlice 方法，因为不再使用 Slice 类型
+    // public Slice getSlice() {
+    //     return slice;
+    // }
 
     @Override
-    public <R, C> R accept(AstVisitor<R, C> visitor, C context)
-    {
+    public <R, C> R accept(AstVisitor<R, C> visitor, C context) {
         return visitor.visitCharLiteral(this, context);
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -76,14 +66,12 @@ public class CharLiteral
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return Objects.hash(value);
     }
 
     @Override
-    public boolean shallowEquals(Node other)
-    {
+    public boolean shallowEquals(Node other) {
         if (!sameClass(this, other)) {
             return false;
         }
