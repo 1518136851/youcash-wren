@@ -34,12 +34,14 @@ import io.wren.base.WrenMDL;
 import io.wren.base.sqlrewrite.WrenPlanner;
 import io.wren.main.service.impl.PreviewService;
 import io.wren.main.service.sql.SqlConverter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.calcite.sql.parser.SqlParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class PreviewServiceImpl implements PreviewService
 {
@@ -52,7 +54,7 @@ public class PreviewServiceImpl implements PreviewService
     private Boolean enableDynamicFields;
 
 
-    @Autowired
+    @Override
     public String dryPlan(WrenMDL mdl, String sql, boolean isModelingOnly) throws SqlParseException {
 
         // 构建会话上下文
@@ -67,7 +69,7 @@ public class PreviewServiceImpl implements PreviewService
 
         if (isModelingOnly) {
 
-//            log.info("Planned SQL: {}", planned);
+            log.info("Planned SQL: {}", planned);
             return planned;
         }
 

@@ -38,7 +38,7 @@ public class Model
     private final List<Column> columns;
     private final String primaryKey;
     private final boolean cached;
-    private final Duration refreshTime;
+//    private final Duration refreshTime;
     private final Map<String, String> properties;
 
     public static Model model(String name, String refSql, List<Column> columns)
@@ -48,22 +48,22 @@ public class Model
 
     public static Model model(String name, String refSql, List<Column> columns, boolean cached)
     {
-        return new Model(name, refSql, null, null, columns, null, cached, null, ImmutableMap.of());
+        return new Model(name, refSql, null, null, columns, null, cached, ImmutableMap.of());
     }
 
     public static Model model(String name, String refSql, List<Column> columns, String primaryKey)
     {
-        return new Model(name, refSql, null, null, columns, primaryKey, false, null, ImmutableMap.of());
+        return new Model(name, refSql, null, null, columns, primaryKey, false, ImmutableMap.of());
     }
 
     public static Model onBaseObject(String name, String baseObject, List<Column> columns, String primaryKey)
     {
-        return new Model(name, null, baseObject, null, columns, primaryKey, false, null, ImmutableMap.of());
+        return new Model(name, null, baseObject, null, columns, primaryKey, false, ImmutableMap.of());
     }
 
     public static Model onTableReference(String name, TableReference tableReference, List<Column> columns, String primaryKey)
     {
-        return new Model(name, null, null, tableReference, columns, primaryKey, false, null, ImmutableMap.of());
+        return new Model(name, null, null, tableReference, columns, primaryKey, false, ImmutableMap.of());
     }
 
     @JsonCreator
@@ -75,7 +75,7 @@ public class Model
             @JsonProperty("columns") List<Column> columns,
             @JsonProperty("primaryKey") String primaryKey,
             @JsonProperty("cached") boolean cached,
-            @JsonProperty("refreshTime") Duration refreshTime,
+//            @JsonProperty("refreshTime") Duration refreshTime,
             @JsonProperty("properties") Map<String, String> properties)
     {
         this.name = requireNonNullEmpty(name, "name is null or empty");
@@ -87,7 +87,7 @@ public class Model
         this.columns = columns == null ? List.of() : columns;
         this.primaryKey = primaryKey;
         this.cached = cached;
-        this.refreshTime = refreshTime == null ? defaultRefreshTime : refreshTime;
+//        this.refreshTime = refreshTime == null ? defaultRefreshTime : refreshTime;
         this.properties = properties == null ? ImmutableMap.of() : properties;
     }
 
@@ -147,12 +147,12 @@ public class Model
         return cached;
     }
 
-    @Override
-    @JsonProperty
-    public Duration getRefreshTime()
-    {
-        return refreshTime;
-    }
+//    @Override
+//    @JsonProperty
+//    public Duration getRefreshTime()
+//    {
+//        return refreshTime;
+//    }
 
     @JsonProperty
     public Map<String, String> getProperties()
@@ -177,7 +177,7 @@ public class Model
                 Objects.equals(tableReference, that.tableReference) &&
                 Objects.equals(columns, that.columns) &&
                 Objects.equals(primaryKey, that.primaryKey) &&
-                Objects.equals(refreshTime, that.refreshTime) &&
+//                Objects.equals(refreshTime, that.refreshTime) &&
                 Objects.equals(properties, that.properties);
     }
 
@@ -197,7 +197,7 @@ public class Model
                 .add("tableReference", tableReference)
                 .add("columns", columns)
                 .add("cached", cached)
-                .add("refreshTime", refreshTime)
+//                .add("refreshTime", refreshTime)
                 .add("properties", properties)
                 .toString();
     }

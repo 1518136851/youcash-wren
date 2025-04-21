@@ -39,7 +39,7 @@ public class Metric
     private final List<Column> measure;
     private final List<TimeGrain> timeGrain;
     private final boolean cached;
-    private final Duration refreshTime;
+//    private final Duration refreshTime;
     private final Map<String, String> properties;
 
     public static Metric metric(String name, String baseObject, List<Column> dimension, List<Column> measure)
@@ -54,7 +54,7 @@ public class Metric
 
     public static Metric metric(String name, String baseObject, List<Column> dimension, List<Column> measure, List<TimeGrain> timeGrain, boolean cached)
     {
-        return new Metric(name, baseObject, dimension, measure, timeGrain, cached, null, ImmutableMap.of());
+        return new Metric(name, baseObject, dimension, measure, timeGrain, cached, ImmutableMap.of());
     }
 
     @JsonCreator
@@ -65,7 +65,7 @@ public class Metric
             @JsonProperty("measure") List<Column> measure,
             @JsonProperty("timeGrain") List<TimeGrain> timeGrain,
             @JsonProperty("cached") boolean cached,
-            @JsonProperty("refreshTime") Duration refreshTime,
+//            @JsonProperty("refreshTime") Duration refreshTime,
             @JsonProperty("properties") Map<String, String> properties)
     {
         this.name = requireNonNullEmpty(name, "name is null or empty");
@@ -75,7 +75,7 @@ public class Metric
         this.cached = cached;
         checkArgument(!measure.isEmpty(), "the number of measures should be one at least");
         this.timeGrain = timeGrain == null ? ImmutableList.of() : timeGrain;
-        this.refreshTime = refreshTime == null ? defaultRefreshTime : refreshTime;
+//        this.refreshTime = refreshTime == null ? defaultRefreshTime : refreshTime;
         this.properties = properties == null ? ImmutableMap.of() : properties;
     }
 
@@ -131,12 +131,12 @@ public class Metric
         return cached;
     }
 
-    @Override
-    @JsonProperty
-    public Duration getRefreshTime()
-    {
-        return refreshTime;
-    }
+//    @Override
+//    @JsonProperty
+//    public Duration getRefreshTime()
+//    {
+//        return refreshTime;
+//    }
 
     @JsonProperty
     public Map<String, String> getProperties()
@@ -160,7 +160,7 @@ public class Metric
                 Objects.equals(dimension, that.dimension) &&
                 Objects.equals(measure, that.measure) &&
                 Objects.equals(timeGrain, that.timeGrain) &&
-                Objects.equals(refreshTime, that.refreshTime) &&
+//                Objects.equals(refreshTime, that.refreshTime) &&
                 Objects.equals(properties, that.properties);
     }
 
@@ -174,7 +174,7 @@ public class Metric
                 measure,
                 timeGrain,
                 cached,
-                refreshTime,
+//                refreshTime,
                 properties);
     }
 
@@ -188,7 +188,7 @@ public class Metric
                 .add("measure", measure)
                 .add("timeGrain", timeGrain)
                 .add("cached", cached)
-                .add("refreshTime", refreshTime)
+//                .add("refreshTime", refreshTime)
                 .add("properties", properties)
                 .toString();
     }

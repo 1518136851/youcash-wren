@@ -98,7 +98,7 @@ public class WrenMDL
                     processed,
                     model.getPrimaryKey(),
                     model.isCached(),
-                    model.getRefreshTime(),
+//                    model.getRefreshTime(),
                     model.getProperties());
         }).collect(toList());
 
@@ -109,7 +109,7 @@ public class WrenMDL
                         metric.getMeasure().stream().map(column -> renderExpression(column, macroTags, original)).collect(toList()),
                         metric.getTimeGrain(),
                         metric.isCached(),
-                        metric.getRefreshTime(),
+//                        metric.getRefreshTime(),
                         metric.getProperties())
         ).collect(toList());
 

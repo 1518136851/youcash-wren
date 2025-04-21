@@ -35,7 +35,7 @@ public class CumulativeMetric
             String baseObject,
             Measure measure,
             Window window) {
-        return new CumulativeMetric(name, baseObject, measure, window, false, null, Collections.emptyMap());
+        return new CumulativeMetric(name, baseObject, measure, window, false, Collections.emptyMap());
     }
 
     private final String name;
@@ -43,7 +43,7 @@ public class CumulativeMetric
     private final Measure measure;
     private final Window window;
     private final boolean cached;
-    private final Duration refreshTime;
+//    private final Duration refreshTime;
     private final Map<String, String> properties;
 
     @JsonCreator
@@ -53,14 +53,14 @@ public class CumulativeMetric
             @JsonProperty("measure") Measure measure,
             @JsonProperty("window") Window window,
             @JsonProperty("cached") boolean cached,
-            @JsonProperty("refreshTime") Duration refreshTime,
+//            @JsonProperty("refreshTime") Duration refreshTime,
             @JsonProperty("properties") Map<String, String> properties) {
         this.name = requireNonNullEmpty(name, "name is null or empty");
         this.baseObject = requireNonNullEmpty(baseObject, "baseObject is null or empty");
         this.measure = requireNonNull(measure, "measure is null");
         this.window = requireNonNull(window, "window is null");
         this.cached = cached;
-        this.refreshTime = refreshTime;
+//        this.refreshTime = refreshTime;
         this.properties = properties == null? Collections.emptyMap() : Collections.unmodifiableMap(properties);
     }
 
@@ -89,20 +89,20 @@ public class CumulativeMetric
         return cached;
     }
 
-    @JsonProperty
-    public Duration getRefreshTime() {
-        return refreshTime;
-    }
+//    @JsonProperty
+//    public Duration getRefreshTime() {
+//        return refreshTime;
+//    }
 
     @JsonProperty
     public Map<String, String> getProperties() {
         return properties;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, baseObject, measure, window, cached, refreshTime, properties);
-    }
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(name, baseObject, measure, window, cached, refreshTime, properties);
+//    }
 
     @Override
     public boolean equals(Object o) {
@@ -120,7 +120,7 @@ public class CumulativeMetric
                 Objects.equals(baseObject, that.baseObject) &&
                 Objects.equals(measure, that.measure) &&
                 Objects.equals(window, that.window) &&
-                Objects.equals(refreshTime, that.refreshTime) &&
+//                Objects.equals(refreshTime, that.refreshTime) &&
                 Objects.equals(properties, that.properties);
     }
 
@@ -132,7 +132,7 @@ public class CumulativeMetric
         sb.append(", measure=").append(measure);
         sb.append(", window=").append(window);
         sb.append(", cached=").append(cached);
-        sb.append(", refreshTime=").append(refreshTime);
+//        sb.append(", refreshTime=").append(refreshTime);
         sb.append(", properties=").append(properties);
         sb.append('}');
         return sb.toString();

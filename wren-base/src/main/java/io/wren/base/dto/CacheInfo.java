@@ -20,11 +20,11 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 
 public interface CacheInfo
 {
-    Duration defaultRefreshTime = Duration.ofMinutes(30);
+//    Duration defaultRefreshTime = Duration.ofMinutes(30);
 
     String getName();
 
     boolean isCached();
 
-    Duration getRefreshTime();
+//    Duration getRefreshTime();
 }

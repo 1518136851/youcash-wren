@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
             apiResult.setMessage("参数校验异常"+ex.getBindingResult().getAllErrors().get(0).getDefaultMessage());
             return apiResult;
         }
-        log.error(e.toString());
+        log.error("全局异常捕抓:{}",e.toString(),e);
         return ApiResult.fail(ApiResult.fail(ResponseCodeEnum.ERROR));
     }
 }
